@@ -1,0 +1,25 @@
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mappers.CourseMapper">
+    <resultMap id="courseResultMap" type="Course">
+        <id column="course_id" property="id"/>
+        <result column="course_name" property="courseName"/>
+        <result column="course_duration" property="duration"/>
+    </resultMap>
+
+    <select id="findCourseById" resultMap="courseResultMap">
+        select * from courses where course_id = #{id}
+    </select>
+
+    <select id="findAllCourses" resultMap="courseResultMap">
+        select * from courses
+    </select>
+
+    <select id="getAllStudents" resultMap="com.example.demo.mappers.StudentMapper.studentResultMap">
+        SELECT stud_id, name, email, dob, city, state, zip_code
+        from students left outer join students_courses
+        on students.stud_id = students_courses.student_id
+        left join courses
+        on courses.course_id = students_courses.course_id
+        where courses.course_id = #{courseId}
+    </select>
+</mapper>
